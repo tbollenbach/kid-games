@@ -5,7 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { puzzles } from '../data/puzzles';
 import { useGame } from '../types/GameContext';
 
-export const PuzzlesScreen: React.FC = () => {
+interface PuzzlesScreenProps {
+  navigation: {
+    navigate: (screen: string) => void;
+    goBack: () => void;
+  };
+}
+
+export const PuzzlesScreen: React.FC<PuzzlesScreenProps> = ({ navigation }) => {
   const { addPoints, incrementPuzzlesCompleted } = useGame();
   const [currentPuzzleIndex, setCurrentPuzzleIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -62,6 +69,9 @@ export const PuzzlesScreen: React.FC = () => {
       style={styles.container}>
       
       <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
         <Text style={styles.title}>Puzzles</Text>
         <View style={styles.info}>
           <Text style={styles.infoText}>
@@ -122,6 +132,15 @@ const styles = StyleSheet.create({
   header: {
     padding: 20,
     alignItems: 'center',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 20,
+    top: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 20,
+    padding: 8,
   },
   title: {
     fontSize: 32,

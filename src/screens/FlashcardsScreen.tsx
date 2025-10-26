@@ -5,7 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { flashCards } from '../data/flashcards';
 import { useGame } from '../types/GameContext';
 
-export const FlashcardsScreen: React.FC = () => {
+interface FlashcardsScreenProps {
+  navigation: {
+    navigate: (screen: string) => void;
+    goBack: () => void;
+  };
+}
+
+export const FlashcardsScreen: React.FC<FlashcardsScreenProps> = ({ navigation }) => {
   const { addPoints, incrementFlashcardsStudied } = useGame();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -48,6 +55,9 @@ export const FlashcardsScreen: React.FC = () => {
       style={styles.container}>
       
       <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
         <Text style={styles.title}>Flashcards</Text>
         <Text style={styles.counter}>
           {currentIndex + 1} / {flashCards.length}
@@ -123,6 +133,15 @@ const styles = StyleSheet.create({
   header: {
     padding: 20,
     alignItems: 'center',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 20,
+    top: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 20,
+    padding: 8,
   },
   title: {
     fontSize: 32,

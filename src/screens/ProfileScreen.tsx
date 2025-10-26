@@ -4,7 +4,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useGame } from '../types/GameContext';
 
-export const ProfileScreen: React.FC = () => {
+interface ProfileScreenProps {
+  navigation: {
+    navigate: (screen: string) => void;
+    goBack: () => void;
+  };
+}
+
+export const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
   const { progress, resetProgress } = useGame();
 
   const handleReset = () => {
@@ -41,6 +48,9 @@ export const ProfileScreen: React.FC = () => {
       style={styles.container}>
       
       <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
       </View>
 
@@ -118,6 +128,15 @@ const styles = StyleSheet.create({
   header: {
     padding: 20,
     alignItems: 'center',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 20,
+    top: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 20,
+    padding: 8,
   },
   headerTitle: {
     fontSize: 32,
